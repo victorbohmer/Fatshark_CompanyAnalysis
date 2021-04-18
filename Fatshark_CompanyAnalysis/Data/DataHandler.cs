@@ -16,11 +16,13 @@ namespace Fatshark_CompanyAnalysis.Data
             context = new DataContext();
             context.Database.EnsureCreated();
         }
-        public void CreateCompanySetFromFile(string filePath = null)
+        public void CreateCompanySetFromIncludedSampleFile()
         {
-            if (filePath == null)
-                filePath = Path.Combine(Environment.CurrentDirectory, @"Files\", "uk-500.csv");
-
+            var filePath = Path.Combine(Environment.CurrentDirectory, @"Files\", "uk-500.csv");
+            CreateCompanySetFromFile(filePath);
+        }
+        public void CreateCompanySetFromFile(string filePath)
+        {
             var companies = ReadCompaniesFromFile(filePath);
 
             var fileName = filePath.Split("\\").Last();

@@ -1,4 +1,5 @@
 ﻿using Fatshark_CompanyAnalysis.Data;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,18 @@ namespace Fatshark_CompanyAnalysis
         {
             InitializeComponent();
             DataHandler = new DataHandler();
-            DataHandler.CreateCompanySetFromFile();
         }
+
+        private void createDatasetFromFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+                DataHandler.CreateCompanySetFromFile(openFileDialog.FileName);
+        }
+        private void selectDatasetButton_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
     }
 }
