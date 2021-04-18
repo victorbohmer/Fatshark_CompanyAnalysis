@@ -24,10 +24,11 @@
 
         <StackPanel Grid.Column="1" Grid.Row="1">
             <Button Name="CreateDatasetFromFileButton" Click="CreateDatasetFromFileButton_Click">Create dataset from file</Button>
-            <Button Name="SelectCompanySetButton" Click="SelectCompanySetButton_Click">Select dataset</Button>
+            <Button Name="SelectCompanySetButton" Click="SelectCompanySetButton_Click">Select company set</Button>
             <Button Name="DisplayPopularDomainsButton" Click="DisplayPopularDomainsButton_Click">Show popular email domains</Button>
             <Button Name="DisplayCompanyClustersButton" Click="DisplayCompanyClustersButton_Click">Show company clusters</Button>
             <Button Name="DisplayCountryDistributionButton" Click="DisplayCountryDistributionButton_Click">Show country distribution</Button>
+            <Button Name="EditCompanySetButton" Click="EditCompanySetButton_Click">Edit Company Set</Button>
         </StackPanel>
         <TextBlock Name="CompanySetNameDisplay" Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom" TextWrapping="Wrap"></TextBlock>
 

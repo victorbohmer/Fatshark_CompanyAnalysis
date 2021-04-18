@@ -1,0 +1,45 @@
+﻿<Window x:Class="Fatshark_CompanyAnalysis.Windows.EditCompanySetWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Fatshark_CompanyAnalysis.Windows"
+        mc:Ignorable="d"
+        Title="EditCompanySetWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="10*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+
+        <DataGrid Name="CompaniesDataGrid" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="First Name"  Binding="{Binding FirstName}"/>
+                <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}" />
+                <DataGridTextColumn Header="Company Name" Binding="{Binding CompanyName}" />
+                <DataGridTextColumn Header="Address"  Binding="{Binding Address}"/>
+                <DataGridTextColumn Header="City" Binding="{Binding City}" />
+                <DataGridTextColumn Header="County" Binding="{Binding County}" />
+                <DataGridTextColumn Header="Postal"  Binding="{Binding Postal}"/>
+                <DataGridTextColumn Header="Phone 1" Binding="{Binding Phone1}" />
+                <DataGridTextColumn Header="Phone 2" Binding="{Binding Phone2}" />
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}" />
+                <DataGridTextColumn Header="Web address" Binding="{Binding Web}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Name="SaveButton" Click="SaveButton_Click" Margin="10,0">Save</Button>
+            <Button Name="CloseButton" Click="CloseButton_Click" Margin="10,0">Close</Button>
+        </StackPanel>
+        
+    </Grid>
+</Window>

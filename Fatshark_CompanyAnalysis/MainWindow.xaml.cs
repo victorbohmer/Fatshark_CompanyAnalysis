@@ -50,6 +50,8 @@ namespace Fatshark_CompanyAnalysis
             AddLogEntry("Startup complete");
         }
 
+        
+
         public void AddLogEntry(string message, LogType type = LogType.Info)
         {
             logEntries.Add(new LogEntry(message, type));
@@ -90,7 +92,7 @@ namespace Fatshark_CompanyAnalysis
 
             var headerDictionary = new Dictionary<string, string>()
             {
-                {"Key", $"Eastings, Northings (Scale: {scaleInMeters} meters)" },
+                {"Key", $"Northings, Eastings (scale: {scaleInMeters} meters)" },
                 {"Value", "Number of companies" }
             };
 
@@ -114,6 +116,12 @@ namespace Fatshark_CompanyAnalysis
             DataDisplayStackPanel.Children.Add(
                 new DictionaryDataGrid(countryDistribution, headerDictionary)
                 );
+        }
+
+        private void EditCompanySetButton_Click(object sender, RoutedEventArgs e)
+        {
+            var subWindow = new EditCompanySetWindow(this);
+            subWindow.Show();
         }
 
     }
