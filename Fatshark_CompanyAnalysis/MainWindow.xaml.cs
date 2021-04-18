@@ -69,9 +69,15 @@ namespace Fatshark_CompanyAnalysis
         {
             var popularDomains = DataHandler.GetPopularDomains();
 
+            var headerDictionary = new Dictionary<string, string>()
+            {
+                {"Key", "Domain" },
+                {"Value", "Count" }
+            };
+
             DataDisplayStackPanel.Children.Clear();
             DataDisplayStackPanel.Children.Add(
-                new PopularDomainDataGrid(popularDomains)
+                new DictionaryDataGrid(popularDomains, headerDictionary)
                 );
         }
 
