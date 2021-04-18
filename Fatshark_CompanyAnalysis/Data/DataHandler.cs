@@ -1,4 +1,5 @@
-﻿using Fatshark_CompanyAnalysis.Models;
+﻿using Fatshark_CompanyAnalysis.API;
+using Fatshark_CompanyAnalysis.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,13 +13,14 @@ namespace Fatshark_CompanyAnalysis.Data
     {
         DataContext context;
         MainWindow mainWindow;
+        ApiInterface apiInterface;
         public int CompanySetId { get { return mainWindow.CompanySet.CompanySetId; } }
         public DataHandler(MainWindow mainWindow)
         {
             this.mainWindow = mainWindow;
             context = new DataContext();
             context.Database.EnsureCreated();
-            
+            apiInterface = new ApiInterface();
         }
         public void CreateCompanySetFromIncludedSampleFile()
         {
@@ -86,13 +88,17 @@ namespace Fatshark_CompanyAnalysis.Data
             return popularDomains;
         }
 
-        internal Dictionary<string, int> GetCompanyClusters()
+        internal async Task<Dictionary<string, int>> GetCompanyClusters(int scaleInMeters)
         {
             var postCodesMissingInfo = GetPostcodesMissingInfo();
 
+            if (postCodesMissingInfo.Length > 0)
+            {
+                mainWindow.AddLogEntry($"Missing info for {postCodesMissingInfo.Count()} postcodes");
+                await GetPostcodeInfos(postCodesMissingInfo);
+            }
 
-
-            throw new NotImplementedException();
+            return GetCompanyClustersFromDatabase(scaleInMeters);
         }
 
         private string[] GetPostcodesMissingInfo()
@@ -104,6 +110,35 @@ namespace Fatshark_CompanyAnalysis.Data
                 .ToArray();
 
             return postCodesMissingInfo;
+        }
+
+        private async Task GetPostcodeInfos(string[] postCodesMissingInfo)
+        {
+            var postcodeInfo = await apiInterface.GetPostcodeInfos(postCodesMissingInfo);
+
+            mainWindow.AddLogEntry($"Successfully fetched info for {postcodeInfo.Count()} postcodes");
+            if (postcodeInfo.Count() < postCodesMissingInfo.Length)
+                mainWindow.AddLogEntry($"Failed to fetch info for {postCodesMissingInfo.Length - postcodeInfo.Count()} postcodes");
+
+            await context.AddRangeAsync(postcodeInfo);
+            await context.SaveChangesAsync();
+        }
+
+        private Dictionary<string, int> GetCompanyClustersFromDatabase(int scaleInMeters = 20000, int minCount = 5, int maxResults = 20)
+        {
+            var roundedCoordinates = context.Companies
+                .Join(context.PostcodeInfos, c => c.Postal, p => p.postcode, (c, p) =>
+                new { RoundedNorthings = (p.northings / scaleInMeters) * scaleInMeters, RoundedEastings = (p.eastings / scaleInMeters) * scaleInMeters })
+                .ToArray();
+
+            var clusters = roundedCoordinates
+                .GroupBy(x => $"Northings: {x.RoundedNorthings}, Eastings: {x.RoundedEastings}")
+                .Where(g => g.Count() >= minCount)
+                .OrderByDescending(g => g.Count())
+                .Take(maxResults)
+                .ToDictionary(g => g.Key, g => g.Count());
+
+            return clusters;
         }
     }
 }

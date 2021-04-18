@@ -85,13 +85,14 @@ namespace Fatshark_CompanyAnalysis
                 );
         }
 
-        private void DisplayCompanyClustersButton_Click(object sender, RoutedEventArgs e)
+        private async void DisplayCompanyClustersButton_Click(object sender, RoutedEventArgs e)
         {
-            var companyClusters = DataHandler.GetCompanyClusters();
+            var scaleInMeters = 20000;
+            var companyClusters = await DataHandler.GetCompanyClusters(scaleInMeters);
 
             var headerDictionary = new Dictionary<string, string>()
             {
-                {"Key", "Eastings, Northings" },
+                {"Key", $"Eastings, Northings (Scale: {scaleInMeters} meters)" },
                 {"Value", "Number of companies" }
             };
 

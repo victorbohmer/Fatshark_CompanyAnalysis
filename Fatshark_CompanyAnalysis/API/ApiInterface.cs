@@ -14,11 +14,30 @@ namespace Fatshark_CompanyAnalysis.API
     {
         private readonly HttpClient client = new HttpClient();
 
-        public async Task GetPostcodeInfo()
+        //public async Task GetPostcodeInfos()
+        //{
+        //    await GetPostcodeInfos(new string[] { "CT2 7PP", "DA2 7PP" });
+        //}
+        public async Task<List<PostcodeInfo>> GetPostcodeInfos(string[] postCodes)
         {
-            await GetPostcodeInfo(new string[] { "CT2 7PP", "DA2 7PP" });
+            var postcodeInfos = new List<PostcodeInfo>();
+            var startIndex = 0;
+            while (true)
+            {
+                var currentPostcodes = postCodes
+                    .Skip(startIndex)
+                    .Take(100)
+                    .ToArray();
+                postcodeInfos.AddRange(await GetUpTo100PostcodeInfos(currentPostcodes));
+                
+                startIndex += 100;
+                if (startIndex > postCodes.Length)
+                    break;
+            }
+            return postcodeInfos;
         }
-        public async Task GetPostcodeInfo(string[] postCodes)
+
+        public async Task<List<PostcodeInfo>> GetUpTo100PostcodeInfos(string[] postCodes)
         {
             var requestData = new Dictionary<string, string[]>
             {
@@ -28,12 +47,10 @@ namespace Fatshark_CompanyAnalysis.API
             var content = JsonContent.Create(requestData, requestData.GetType());
 
             var response = await client.PostAsync("https://api.postcodes.io/postcodes?filter=postcode,eastings,northings", content);
-
             var responseString = await response.Content.ReadAsStringAsync();
-
             var responseDeserialized = JsonSerializer.Deserialize<Response>(responseString);
 
-            var postCodeInfos = responseDeserialized.result.Select(r => r.result).ToArray();
+            return responseDeserialized.result.Select(r => r.result).Where(r => r != null).ToList();
 
         }
 
