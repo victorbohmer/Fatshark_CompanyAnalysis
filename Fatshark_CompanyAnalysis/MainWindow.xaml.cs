@@ -34,7 +34,7 @@ namespace Fatshark_CompanyAnalysis
             set
             {
                 companySet = value;
-                CompanySetNameDisplay.Text = $"Selected Company Set: {companySet.Name}";
+                CompanySetNameDisplay.Text = $"Selected company set: {companySet.Name}";
             }
         }
         CompanySet companySet;
@@ -46,8 +46,8 @@ namespace Fatshark_CompanyAnalysis
             DataHandler = new DataHandler(this);
             CompanySet = DataHandler.GetFirstCompanySet();
 
-            var apiInterface = new ApiInterface();
-            apiInterface.GetPostcodeInfo();
+            //var apiInterface = new ApiInterface();
+            //apiInterface.GetPostcodeInfo();
 
             AddLogEntry("Startup complete");
         }
@@ -82,6 +82,22 @@ namespace Fatshark_CompanyAnalysis
             DataDisplayStackPanel.Children.Clear();
             DataDisplayStackPanel.Children.Add(
                 new DictionaryDataGrid(popularDomains, headerDictionary)
+                );
+        }
+
+        private void DisplayCompanyClustersButton_Click(object sender, RoutedEventArgs e)
+        {
+            var companyClusters = DataHandler.GetCompanyClusters();
+
+            var headerDictionary = new Dictionary<string, string>()
+            {
+                {"Key", "Eastings, Northings" },
+                {"Value", "Number of companies" }
+            };
+
+            DataDisplayStackPanel.Children.Clear();
+            DataDisplayStackPanel.Children.Add(
+                new DictionaryDataGrid(companyClusters, headerDictionary)
                 );
         }
 

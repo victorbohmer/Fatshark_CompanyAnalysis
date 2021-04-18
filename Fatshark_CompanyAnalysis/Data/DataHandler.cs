@@ -18,6 +18,7 @@ namespace Fatshark_CompanyAnalysis.Data
             this.mainWindow = mainWindow;
             context = new DataContext();
             context.Database.EnsureCreated();
+            
         }
         public void CreateCompanySetFromIncludedSampleFile()
         {
@@ -83,6 +84,26 @@ namespace Fatshark_CompanyAnalysis.Data
                 .ToDictionary(g => g.Key, g => g.Count());
 
             return popularDomains;
+        }
+
+        internal Dictionary<string, int> GetCompanyClusters()
+        {
+            var postCodesMissingInfo = GetPostcodesMissingInfo();
+
+
+
+            throw new NotImplementedException();
+        }
+
+        private string[] GetPostcodesMissingInfo()
+        {
+            var postCodesMissingInfo = context.Companies
+                .Where(c => c.CompanySetId == CompanySetId && !context.PostcodeInfos.Select(p => p.postcode).Contains(c.Postal))
+                .Select(c => c.Postal)
+                .Distinct()
+                .ToArray();
+
+            return postCodesMissingInfo;
         }
     }
 }
