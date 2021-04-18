@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Fatshark_CompanyAnalysis.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -36,18 +37,10 @@ namespace Fatshark_CompanyAnalysis.API
 
         }
 
-
-        public class PostCodeInfo
-        {
-            public string postcode { get; set; }
-            public int eastings { get; set; }
-            public int northings { get; set; }
-        }
-
         public class Result
         {
             public string query { get; set; }
-            public PostCodeInfo result { get; set; }
+            public PostcodeInfo result { get; set; }
         }
 
         public class Response

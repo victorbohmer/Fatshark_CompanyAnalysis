@@ -13,6 +13,7 @@ namespace Fatshark_CompanyAnalysis.Data
     {
         public DbSet<CompanySet> CompanySets { get; set; }
         public DbSet<Company> Companies { get; set; }
+        public DbSet<PostcodeInfo> PostcodeInfos { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             var dbPath = Path.Combine(Environment.CurrentDirectory, @"Files\", "testdatabase.db");
