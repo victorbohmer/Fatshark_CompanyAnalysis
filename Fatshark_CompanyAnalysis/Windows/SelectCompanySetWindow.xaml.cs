@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Fatshark_CompanyAnalysis.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,14 +20,51 @@ namespace Fatshark_CompanyAnalysis.Windows
     /// </summary>
     public partial class SelectCompanySetWindow : Window
     {
-        public SelectCompanySetWindow()
+        MainWindow mainWindow;
+        public SelectCompanySetWindow(MainWindow mainWindow)
         {
             InitializeComponent();
+            this.mainWindow = mainWindow;
+
+            CreateCompanySetButtons();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void CompanySetButton_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as CompanySetButton;
+            mainWindow.CompanySet = button.CompanySet;
+
+            Close();
+        }
+
+        private void CreateCompanySetButtons()
+        {
+            var companySets = mainWindow.DataHandler.GetCompanySets();
+
+            StackPanel Sp = FindName("CompanySetStackPanel") as StackPanel;
+            foreach (var companySet in companySets)
+            {
+                var button = new CompanySetButton(companySet);
+                button.Click += CompanySetButton_Click;
+
+                Sp.Children.Add(button);
+
+            }
+        }
+
+        class CompanySetButton : Button
+        {
+            public CompanySet CompanySet { get; set; }
+            public CompanySetButton(CompanySet companySet)
+            {
+                CompanySet = companySet;
+                Content = companySet.Name;
+            }
         }
 
     }

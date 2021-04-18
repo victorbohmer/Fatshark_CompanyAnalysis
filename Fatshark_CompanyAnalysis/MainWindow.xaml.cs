@@ -27,6 +27,15 @@ namespace Fatshark_CompanyAnalysis
     {
         public DataHandler DataHandler;
         ObservableCollection<LogEntry> logEntries = new ObservableCollection<LogEntry>();
+        public CompanySet CompanySet { 
+            get { return companySet; } 
+            set
+            {
+                companySet = value;
+                CompanySetNameDisplay.Text = $"Selected: {companySet.Name}";
+            }
+        }
+        CompanySet companySet;
         public MainWindow()
         {
             InitializeComponent();
@@ -48,7 +57,7 @@ namespace Fatshark_CompanyAnalysis
         }
         private void SelectCompanySetButton_Click(object sender, RoutedEventArgs e)
         {
-            var subWindow = new SelectCompanySetWindow();
+            var subWindow = new SelectCompanySetWindow(this);
             subWindow.Show();
         }
 

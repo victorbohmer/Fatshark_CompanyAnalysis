@@ -49,5 +49,10 @@ namespace Fatshark_CompanyAnalysis.Data
 
             return csvLines.Select(x => Company.FromCsv(x)).ToList();
         }
+
+        public List<CompanySet> GetCompanySets()
+        {
+            return context.CompanySets.ToList();
+        }
     }
 }

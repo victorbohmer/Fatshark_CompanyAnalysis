@@ -23,6 +23,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Column="1" Grid.Row="1">
+            <TextBlock Name="CompanySetNameDisplay"></TextBlock>
             <Button Name="CreateDatasetFromFileButton" Click="CreateDatasetFromFileButton_Click">Create dataset from file</Button>
             <Button Name="SelectCompanySetButton" Click="SelectCompanySetButton_Click">Select dataset</Button>
         </StackPanel>
