@@ -1,4 +1,5 @@
-﻿using Fatshark_CompanyAnalysis.Data;
+﻿using Fatshark_CompanyAnalysis.API;
+using Fatshark_CompanyAnalysis.Data;
 using Fatshark_CompanyAnalysis.Models;
 using Fatshark_CompanyAnalysis.UiElements;
 using Fatshark_CompanyAnalysis.Windows;
@@ -44,6 +45,9 @@ namespace Fatshark_CompanyAnalysis
 
             DataHandler = new DataHandler(this);
             CompanySet = DataHandler.GetFirstCompanySet();
+
+            var apiInterface = new ApiInterface();
+            apiInterface.GetPostcodeInfo();
 
             AddLogEntry("Startup complete");
         }
