@@ -10,6 +10,12 @@ namespace Fatshark_CompanyAnalysis.Data
 {
     public class DataHandler
     {
+        DataContext context;
+        public DataHandler()
+        {
+            context = new DataContext();
+            context.Database.EnsureCreated();
+        }
         public void CreateCompanySetFromFile(string filePath = null)
         {
             if (filePath == null)
@@ -17,7 +23,19 @@ namespace Fatshark_CompanyAnalysis.Data
 
             var companies = ReadCompaniesFromFile(filePath);
 
+            var fileName = filePath.Split("\\").Last();
+            var companySetName = $"{fileName} - {DateTime.Now}";
+
+            SaveCompanySetToDatabase(companies, companySetName);
+
         }
+
+        private void SaveCompanySetToDatabase(List<Company> companies, string companySetName)
+        {
+            context.CompanySets.Add(new CompanySet() { Companies = companies, Name = companySetName });
+            context.SaveChanges();
+        }
+
         public List<Company> ReadCompaniesFromFile(string filePath = null)
         {
             var csvLines = File.ReadAllLines(filePath).Skip(1);

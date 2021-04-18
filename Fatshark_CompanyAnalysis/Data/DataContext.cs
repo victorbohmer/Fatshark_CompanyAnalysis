@@ -11,11 +11,12 @@ namespace Fatshark_CompanyAnalysis.Data
 {
     class DataContext : DbContext
     {
-        public DbSet<CompanySet> Datasets { get; set; }
+        public DbSet<CompanySet> CompanySets { get; set; }
         public DbSet<Company> Companies { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseSqlite(Path.Combine(Environment.CurrentDirectory, @"Files\", "\testdatabase.db"));
+            var dbPath = Path.Combine(Environment.CurrentDirectory, @"Files\", "testdatabase.db");
+            options.UseSqlite($"Data Source = {dbPath}");
         }
     }
 }
