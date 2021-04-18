@@ -29,16 +29,24 @@ namespace Fatshark_CompanyAnalysis.Data
         }
         public void CreateCompanySetFromFile(string filePath)
         {
-            var companies = ReadCompaniesFromFile(filePath);
+            try
+            {
+                var companies = ReadCompaniesFromFile(filePath);
 
-            mainWindow.AddLogEntry($"Successfully parsed {companies.Count()} companies from file");
+                mainWindow.AddLogEntry($"Successfully parsed {companies.Count()} companies from file");
 
-            var fileName = filePath.Split("\\").Last();
-            var companySetName = $"{fileName} - {DateTime.Now}";
+                var fileName = filePath.Split("\\").Last();
+                var companySetName = $"{fileName} - {DateTime.Now}";
 
-            mainWindow.AddLogEntry($"Successfully saved new CompanySet {companySetName}");
+                mainWindow.AddLogEntry($"Successfully saved new CompanySet {companySetName}");
 
-            SaveCompanySetToDatabase(companies, companySetName);
+                SaveCompanySetToDatabase(companies, companySetName);
+            }
+            catch (Exception e)
+            {
+                mainWindow.AddLogEntry(e.Message, LogType.Error);
+            }
+            
         }
 
         private void SaveCompanySetToDatabase(List<Company> companies, string companySetName)
@@ -131,7 +139,7 @@ namespace Fatshark_CompanyAnalysis.Data
 
             mainWindow.AddLogEntry($"Successfully fetched info for {postcodeInfo.Count()} postcodes");
             if (postcodeInfo.Count() < postCodesMissingInfo.Length)
-                mainWindow.AddLogEntry($"Failed to fetch info for {postCodesMissingInfo.Length - postcodeInfo.Count()} postcodes");
+                mainWindow.AddLogEntry($"Failed to fetch info for {postCodesMissingInfo.Length - postcodeInfo.Count()} postcodes", LogType.Error);
 
             await context.AddRangeAsync(postcodeInfo);
             await context.SaveChangesAsync();

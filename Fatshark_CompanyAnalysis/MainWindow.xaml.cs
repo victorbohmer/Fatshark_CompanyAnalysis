@@ -47,9 +47,6 @@ namespace Fatshark_CompanyAnalysis
             DataHandler = new DataHandler(this);
             CompanySet = DataHandler.GetFirstCompanySet();
 
-            //var apiInterface = new ApiInterface();
-            //apiInterface.GetPostcodeInfo();
-
             AddLogEntry("Startup complete");
         }
 

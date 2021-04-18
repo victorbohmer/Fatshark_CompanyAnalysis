@@ -14,10 +14,6 @@ namespace Fatshark_CompanyAnalysis.API
     {
         private readonly HttpClient client = new HttpClient();
 
-        //public async Task GetPostcodeInfos()
-        //{
-        //    await GetPostcodeInfos(new string[] { "CT2 7PP", "DA2 7PP" });
-        //}
         public async Task<List<PostcodeInfo>> GetPostcodeInfos(string[] postCodes)
         {
             var postcodeInfos = new List<PostcodeInfo>();
@@ -51,7 +47,6 @@ namespace Fatshark_CompanyAnalysis.API
             var responseDeserialized = JsonSerializer.Deserialize<Response>(responseString);
 
             return responseDeserialized.result.Select(r => r.result).Where(r => r != null).ToList();
-
         }
 
         public class Result
