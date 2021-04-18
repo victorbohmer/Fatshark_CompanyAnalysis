@@ -23,11 +23,10 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Column="1" Grid.Row="1">
-            
             <Button Name="CreateDatasetFromFileButton" Click="CreateDatasetFromFileButton_Click">Create dataset from file</Button>
             <Button Name="SelectCompanySetButton" Click="SelectCompanySetButton_Click">Select dataset</Button>
-            <TextBlock Name="CompanySetNameDisplay" TextWrapping="Wrap"></TextBlock>
         </StackPanel>
+        <TextBlock Name="CompanySetNameDisplay" Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom" TextWrapping="Wrap"></TextBlock>
 
         <DataGrid Name="LogDataGrid" ItemsSource="{Binding}" AutoGenerateColumns="True" Grid.Column="5" Grid.Row="1">
         </DataGrid>

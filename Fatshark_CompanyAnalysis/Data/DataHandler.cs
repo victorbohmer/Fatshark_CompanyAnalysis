@@ -43,6 +43,17 @@ namespace Fatshark_CompanyAnalysis.Data
             context.SaveChanges();
         }
 
+        internal CompanySet GetFirstCompanySet()
+        {
+            var firstCompanySet = context.CompanySets.FirstOrDefault();
+            if (firstCompanySet == null)
+            {
+                CreateCompanySetFromIncludedSampleFile();
+                firstCompanySet = context.CompanySets.FirstOrDefault();
+            }
+            return firstCompanySet;
+        }
+
         public List<Company> ReadCompaniesFromFile(string filePath = null)
         {
             var csvLines = File.ReadAllLines(filePath).Skip(1);

@@ -32,15 +32,18 @@ namespace Fatshark_CompanyAnalysis
             set
             {
                 companySet = value;
-                CompanySetNameDisplay.Text = $"Selected: {companySet.Name}";
+                CompanySetNameDisplay.Text = $"Selected Company Set: {companySet.Name}";
             }
         }
         CompanySet companySet;
         public MainWindow()
         {
             InitializeComponent();
-            DataHandler = new DataHandler(this);
             LogDataGrid.ItemsSource = logEntries;
+
+            DataHandler = new DataHandler(this);
+            CompanySet = DataHandler.GetFirstCompanySet();
+
             AddLogEntry("Startup complete");
         }
 
