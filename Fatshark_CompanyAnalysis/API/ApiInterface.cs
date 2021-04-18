@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Fatshark_CompanyAnalysis.API
@@ -29,6 +30,30 @@ namespace Fatshark_CompanyAnalysis.API
 
             var responseString = await response.Content.ReadAsStringAsync();
 
+            var responseDeserialized = JsonSerializer.Deserialize<Response>(responseString);
+
+            var postCodeInfos = responseDeserialized.result.Select(r => r.result).ToArray();
+
+        }
+
+
+        public class PostCodeInfo
+        {
+            public string postcode { get; set; }
+            public int eastings { get; set; }
+            public int northings { get; set; }
+        }
+
+        public class Result
+        {
+            public string query { get; set; }
+            public PostCodeInfo result { get; set; }
+        }
+
+        public class Response
+        {
+            public int status { get; set; }
+            public IList<Result> result { get; set; }
         }
     }
 }
