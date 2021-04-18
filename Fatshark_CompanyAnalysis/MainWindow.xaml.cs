@@ -1,5 +1,6 @@
 ﻿using Fatshark_CompanyAnalysis.Data;
 using Fatshark_CompanyAnalysis.Models;
+using Fatshark_CompanyAnalysis.Windows;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -39,15 +40,16 @@ namespace Fatshark_CompanyAnalysis
             logEntries.Add(new LogEntry(message, type));
         }
 
-        private void createDatasetFromFileButton_Click(object sender, RoutedEventArgs e)
+        private void CreateDatasetFromFileButton_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
                 DataHandler.CreateCompanySetFromFile(openFileDialog.FileName);
         }
-        private void selectDatasetButton_Click(object sender, RoutedEventArgs e)
+        private void SelectCompanySetButton_Click(object sender, RoutedEventArgs e)
         {
-            
+            var subWindow = new SelectCompanySetWindow();
+            subWindow.Show();
         }
 
     }
