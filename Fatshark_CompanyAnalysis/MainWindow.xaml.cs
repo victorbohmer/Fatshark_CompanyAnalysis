@@ -26,7 +26,7 @@ namespace Fatshark_CompanyAnalysis
         {
             InitializeComponent();
             DataHandler = new DataHandler();
-            DataHandler.ReadCompaniesFromFile();
+            DataHandler.CreateCompanySetFromFile();
         }
     }
 }

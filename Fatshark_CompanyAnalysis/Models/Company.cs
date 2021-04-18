@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace Fatshark_CompanyAnalysis.Models
 {
-    class Company
+    public class Company
     {
         public int CompanyId { get; set; }
-        public int PostCodeInfoId { get; set; }
-        public int DatasetId { get; set; }
+        public int CompanySetId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string CompanyName { get; set; }

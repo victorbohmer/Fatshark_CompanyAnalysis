@@ -10,16 +10,19 @@ namespace Fatshark_CompanyAnalysis.Data
 {
     public class DataHandler
     {
-        public void ReadCompaniesFromFile(string filePath = null)
+        public void CreateCompanySetFromFile(string filePath = null)
         {
             if (filePath == null)
                 filePath = Path.Combine(Environment.CurrentDirectory, @"Files\", "uk-500.csv");
 
+            var companies = ReadCompaniesFromFile(filePath);
+
+        }
+        public List<Company> ReadCompaniesFromFile(string filePath = null)
+        {
             var csvLines = File.ReadAllLines(filePath).Skip(1);
 
-            var companies = csvLines.Select(x => Company.FromCsv(x)).ToArray();
-
-            Console.WriteLine();
+            return csvLines.Select(x => Company.FromCsv(x)).ToList();
         }
     }
 }
