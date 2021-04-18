@@ -64,5 +64,10 @@ namespace Fatshark_CompanyAnalysis
             subWindow.Show();
         }
 
+        private void DisplayPopularDomainsButton_Click(object sender, RoutedEventArgs e)
+        {
+            var popularDomains = DataHandler.GetPopularDomains();
+        }
+
     }
 }

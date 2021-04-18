@@ -12,6 +12,7 @@ namespace Fatshark_CompanyAnalysis.Data
     {
         DataContext context;
         MainWindow mainWindow;
+        public int CompanySetId { get { return mainWindow.CompanySet.CompanySetId; } }
         public DataHandler(MainWindow mainWindow)
         {
             this.mainWindow = mainWindow;
@@ -64,6 +65,24 @@ namespace Fatshark_CompanyAnalysis.Data
         public List<CompanySet> GetCompanySets()
         {
             return context.CompanySets.ToList();
+        }
+
+        internal Dictionary<string, int> GetPopularDomains()
+        {
+            var minCountToBeIncluded = 5;
+
+            var emailAdresses = context.Companies
+                .Where(c => c.CompanySetId == CompanySetId)
+                .Select(c => c.Email)
+                .ToArray();
+
+            var popularDomains = emailAdresses
+                .GroupBy(c => c.Substring(c.IndexOf('@')))
+                .Where(g => g.Count() >= minCountToBeIncluded)
+                .OrderByDescending(g => g.Count())
+                .ToDictionary(g => g.Key, g => g.Count());
+
+            return popularDomains;
         }
     }
 }
