@@ -1,5 +1,6 @@
 ﻿using Fatshark_CompanyAnalysis.Data;
 using Fatshark_CompanyAnalysis.Models;
+using Fatshark_CompanyAnalysis.UiElements;
 using Fatshark_CompanyAnalysis.Windows;
 using Microsoft.Win32;
 using System;
@@ -67,6 +68,11 @@ namespace Fatshark_CompanyAnalysis
         private void DisplayPopularDomainsButton_Click(object sender, RoutedEventArgs e)
         {
             var popularDomains = DataHandler.GetPopularDomains();
+
+            DataDisplayStackPanel.Children.Clear();
+            DataDisplayStackPanel.Children.Add(
+                new PopularDomainDataGrid(popularDomains)
+                );
         }
 
     }
