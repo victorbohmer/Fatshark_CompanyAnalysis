@@ -27,6 +27,7 @@
             <Button Name="SelectCompanySetButton" Click="SelectCompanySetButton_Click">Select dataset</Button>
             <Button Name="DisplayPopularDomainsButton" Click="DisplayPopularDomainsButton_Click">Show popular email domains</Button>
             <Button Name="DisplayCompanyClustersButton" Click="DisplayCompanyClustersButton_Click">Show company clusters</Button>
+            <Button Name="DisplayCountryDistributionButton" Click="DisplayCountryDistributionButton_Click">Show country distribution</Button>
         </StackPanel>
         <TextBlock Name="CompanySetNameDisplay" Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom" TextWrapping="Wrap"></TextBlock>
 

@@ -10,7 +10,7 @@ namespace Fatshark_CompanyAnalysis.UiElements
     class DictionaryDataGrid : DataGrid
     {
         public Dictionary<string, string> headerDictionary;
-        public DictionaryDataGrid(Dictionary<string, int> dataDictionary, Dictionary<string, string> headerDictionary)
+        public DictionaryDataGrid(Dictionary<string, string> dataDictionary, Dictionary<string, string> headerDictionary)
         {
             AutoGeneratingColumn += ModifyHeaders;
             ItemsSource = dataDictionary;

@@ -12,5 +12,6 @@ namespace Fatshark_CompanyAnalysis.Models
         public string postcode { get; set; }
         public int eastings { get; set; }
         public int northings { get; set; }
+        public string country { get; set; }
     }
 }

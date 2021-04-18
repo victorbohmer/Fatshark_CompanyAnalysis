@@ -46,7 +46,7 @@ namespace Fatshark_CompanyAnalysis.API
 
             var content = JsonContent.Create(requestData, requestData.GetType());
 
-            var response = await client.PostAsync("https://api.postcodes.io/postcodes?filter=postcode,eastings,northings", content);
+            var response = await client.PostAsync("https://api.postcodes.io/postcodes?filter=postcode,eastings,northings,country", content);
             var responseString = await response.Content.ReadAsStringAsync();
             var responseDeserialized = JsonSerializer.Deserialize<Response>(responseString);
 

@@ -70,7 +70,7 @@ namespace Fatshark_CompanyAnalysis.Data
             return context.CompanySets.ToList();
         }
 
-        internal Dictionary<string, int> GetPopularDomains()
+        internal Dictionary<string, string> GetPopularDomains()
         {
             var minCountToBeIncluded = 5;
 
@@ -83,12 +83,27 @@ namespace Fatshark_CompanyAnalysis.Data
                 .GroupBy(c => c.Substring(c.IndexOf('@')))
                 .Where(g => g.Count() >= minCountToBeIncluded)
                 .OrderByDescending(g => g.Count())
-                .ToDictionary(g => g.Key, g => g.Count());
+                .ToDictionary(g => g.Key, g => g.Count().ToString());
 
             return popularDomains;
         }
 
-        internal async Task<Dictionary<string, int>> GetCompanyClusters(int scaleInMeters)
+        internal async Task<Dictionary<string, string>> GetCompanyClusters(int scaleInMeters)
+        {
+            await EnsurePostcodeInfoExists();
+
+            return GetCompanyClustersFromDatabase(scaleInMeters);
+        }
+        internal async Task<Dictionary<string, string>> GetCountryDistribution()
+        {
+            await EnsurePostcodeInfoExists();
+
+            return GetCountryDistributionFromDatabase();
+        }
+
+        
+
+        private async Task EnsurePostcodeInfoExists()
         {
             var postCodesMissingInfo = GetPostcodesMissingInfo();
 
@@ -97,8 +112,6 @@ namespace Fatshark_CompanyAnalysis.Data
                 mainWindow.AddLogEntry($"Missing info for {postCodesMissingInfo.Count()} postcodes");
                 await GetPostcodeInfos(postCodesMissingInfo);
             }
-
-            return GetCompanyClustersFromDatabase(scaleInMeters);
         }
 
         private string[] GetPostcodesMissingInfo()
@@ -124,7 +137,7 @@ namespace Fatshark_CompanyAnalysis.Data
             await context.SaveChangesAsync();
         }
 
-        private Dictionary<string, int> GetCompanyClustersFromDatabase(int scaleInMeters = 20000, int minCount = 5, int maxResults = 20)
+        private Dictionary<string, string> GetCompanyClustersFromDatabase(int scaleInMeters = 20000, int minCount = 5, int maxResults = 20)
         {
             var roundedCoordinates = context.Companies
                 .Join(context.PostcodeInfos, c => c.Postal, p => p.postcode, (c, p) =>
@@ -136,9 +149,23 @@ namespace Fatshark_CompanyAnalysis.Data
                 .Where(g => g.Count() >= minCount)
                 .OrderByDescending(g => g.Count())
                 .Take(maxResults)
-                .ToDictionary(g => g.Key, g => g.Count());
+                .ToDictionary(g => g.Key, g => g.Count().ToString());
 
             return clusters;
         }
+
+        private Dictionary<string, string> GetCountryDistributionFromDatabase()
+        {
+            var countries = context.Companies
+                .Join(context.PostcodeInfos, c => c.Postal, p => p.postcode, (c, p) => p.country)
+                .ToArray();
+
+            var countryDistribution = countries
+                .GroupBy(x => x)
+                .ToDictionary(g => g.Key, g => $"{g.Count() * 100 / countries.Length}%");
+
+            return countryDistribution;
+        }
+
     }
 }

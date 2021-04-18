@@ -29,8 +29,9 @@ namespace Fatshark_CompanyAnalysis
     {
         public DataHandler DataHandler;
         ObservableCollection<LogEntry> logEntries = new ObservableCollection<LogEntry>();
-        public CompanySet CompanySet { 
-            get { return companySet; } 
+        public CompanySet CompanySet
+        {
+            get { return companySet; }
             set
             {
                 companySet = value;
@@ -99,6 +100,22 @@ namespace Fatshark_CompanyAnalysis
             DataDisplayStackPanel.Children.Clear();
             DataDisplayStackPanel.Children.Add(
                 new DictionaryDataGrid(companyClusters, headerDictionary)
+                );
+        }
+
+        private async void DisplayCountryDistributionButton_Click(object sender, RoutedEventArgs e)
+        {
+            var countryDistribution = await DataHandler.GetCountryDistribution();
+
+            var headerDictionary = new Dictionary<string, string>()
+            {
+                {"Key", $"Country" },
+                {"Value", "Percentage of companies" }
+            };
+
+            DataDisplayStackPanel.Children.Clear();
+            DataDisplayStackPanel.Children.Add(
+                new DictionaryDataGrid(countryDistribution, headerDictionary)
                 );
         }
 
