@@ -55,15 +55,16 @@ namespace Fatshark_CompanyAnalysis.Data
             context.SaveChanges();
         }
 
-        internal CompanySet GetFirstCompanySet()
+        internal void SetLatestCompanySetAsActive()
         {
-            var firstCompanySet = context.CompanySets.FirstOrDefault();
+            var firstCompanySet = context.CompanySets.OrderBy(c => c.CompanySetId).LastOrDefault();
             if (firstCompanySet == null)
             {
                 CreateCompanySetFromIncludedSampleFile();
-                firstCompanySet = context.CompanySets.FirstOrDefault();
+                firstCompanySet = context.CompanySets.OrderBy(c => c.CompanySetId).LastOrDefault();
             }
-            return firstCompanySet;
+            mainWindow.AddLogEntry($"Set latest CompanySet {firstCompanySet.Name} as active");
+            mainWindow.CompanySet = firstCompanySet;
         }
 
         public List<Company> ReadCompaniesFromFile(string filePath = null)

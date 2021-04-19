@@ -45,12 +45,10 @@ namespace Fatshark_CompanyAnalysis
             LogDataGrid.ItemsSource = logEntries;
 
             DataHandler = new DataHandler(this);
-            CompanySet = DataHandler.GetFirstCompanySet();
+            DataHandler.SetLatestCompanySetAsActive();
 
             AddLogEntry("Startup complete");
         }
-
-        
 
         public void AddLogEntry(string message, LogType type = LogType.Info)
         {
@@ -61,7 +59,11 @@ namespace Fatshark_CompanyAnalysis
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
+            {
                 DataHandler.CreateCompanySetFromFile(openFileDialog.FileName);
+                DataHandler.SetLatestCompanySetAsActive();
+            }
+                
         }
         private void SelectCompanySetButton_Click(object sender, RoutedEventArgs e)
         {
@@ -93,7 +95,7 @@ namespace Fatshark_CompanyAnalysis
             var headerDictionary = new Dictionary<string, string>()
             {
                 {"Key", $"Northings, Eastings (scale: {scaleInMeters} meters)" },
-                {"Value", "Number of companies" }
+                {"Value", "Number of people" }
             };
 
             DataDisplayStackPanel.Children.Clear();
@@ -109,7 +111,7 @@ namespace Fatshark_CompanyAnalysis
             var headerDictionary = new Dictionary<string, string>()
             {
                 {"Key", $"Country" },
-                {"Value", "Percentage of companies" }
+                {"Value", "Percentage of people" }
             };
 
             DataDisplayStackPanel.Children.Clear();
